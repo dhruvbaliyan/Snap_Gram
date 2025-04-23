@@ -59,11 +59,22 @@ export async function signInAccount(user:{
     password:string
 }) {
     try {
+        console.log(user);
+        
         const session = await account.createEmailPasswordSession(user.email , user.password);
         console.log(session);
         return session;
     } catch (error) {
         console.log(error)
+    }
+}
+
+export async function signOutAccount(){
+    try {
+        const session = await account.deleteSession('current');
+        return session;
+    } catch (error) {
+        console.log(error);
     }
 }
 

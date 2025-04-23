@@ -32,6 +32,8 @@ const SigninForm = () => {
   });
 
   const handleSignin = async (user: z.infer<typeof SigninFormValiadtion>) => {
+    console.log(user);
+    
     const session = await signInAccount(user);
 
     if (!session) {
