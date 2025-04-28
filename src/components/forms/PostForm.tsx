@@ -15,16 +15,17 @@ import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
 import { PostFormValidation } from "@/lib/validation"
 import { Models } from "appwrite"
-import { useCreatePost } from "@/lib/react-query/queriesAndMutation"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutation"
 import { useUserContext } from "@/context/AuthContext"
 import { toast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
 
 type PostFormProps ={
-    post?: Models.Document;
+    post?: Models.Document,
+    action: "update" | "create";
 }
 
-const PostForm= ({post} : PostFormProps)=> {
+const PostForm= ({post,action} : PostFormProps)=> {
     const navigate=useNavigate();
     const {user} = useUserContext();
     // 1. Define your form.
@@ -38,12 +39,33 @@ const PostForm= ({post} : PostFormProps)=> {
       },
     })
    const
-    {mutateAsync:CreatePost, isPending:isLoadingCreate} = useCreatePost()
+    {mutateAsync:CreatePost, isPending:isLoadingCreate} = useCreatePost();
+
+    const
+    {mutateAsync:updatePost, isPending:isLoadingUpdate} = useUpdatePost()
     // 2. Define a submit handler.
+    
     async function onSubmit(values: z.infer<typeof PostFormValidation>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
       // console.log("hello");
+      if(post && action=='update'){
+        const updatedPost = await updatePost({
+          ...values,
+          postId:post.$id,
+          imageId:post?.imageId,
+          imageUrl:post?.imageUrl
+
+        })
+
+        if(!updatedPost){
+          return toast({
+            title:"Updation Failed"
+          })
+        }
+
+        return navigate(`/posts/${post.$id}`);
+      }
       const newPost = await CreatePost({
         ...values,
         userId:user.id
@@ -87,7 +109,7 @@ const PostForm= ({post} : PostFormProps)=> {
                   <FormControl>
                     <FileUploader 
                     fieldChange={field.onChange}
-                    mediaUrl = {post?.imageUrl}/>
+                    mediaUrl = {post?.imageURL}/>
                   </FormControl>
                   <FormMessage className="shad-form_message"/>
                 </FormItem>
@@ -133,7 +155,8 @@ const PostForm= ({post} : PostFormProps)=> {
                 Cancel</Button>
                 <Button
                 className="shad-button_primary whitespace-nowrap" 
-                type="submit" >Submit</Button>
+                type="submit" 
+                disabled={isLoadingCreate || isLoadingUpdate}>Submit</Button>
             </div>
           </form>
         </Form>
