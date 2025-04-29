@@ -24,9 +24,10 @@ const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   
+  // *const 
+      // *{checkAuthUser , isLoading: isUserLoading} = useUserContext();
   const 
-      {checkAuthUser , isLoading: isUserLoading} = useUserContext();
-  
+  {checkAuthUser } = useUserContext();
 
 // 1. Define your form.
   const form = useForm<z.infer<typeof SignUpFormValiadtion>>({
@@ -43,9 +44,11 @@ const SignupForm = () => {
     { mutateAsync :createUserAccount ,
     isPending : isCreatingAccount }  = useCreateUserAccount();
 
+  // *const 
+  // *  { mutateAsync :signInAccount ,
+  //  *   isPending : isSigningIn }  = useSignInAccount();
   const 
-    { mutateAsync :signInAccount ,
-      isPending : isSigningIn }  = useSignInAccount();
+  { mutateAsync :signInAccount  }  = useSignInAccount();
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignUpFormValiadtion>) {

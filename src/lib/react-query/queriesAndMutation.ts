@@ -1,4 +1,4 @@
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types'
+import { INewPost, INewUser, IUpdatePost } from '@/types'
 import {useQuery,
     useMutation,
     useQueryClient,
@@ -167,7 +167,8 @@ export const useGetPosts = ()=>{
   return useInfiniteQuery({
   queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
   queryFn: ({ pageParam = null }) => getInfinitePosts(pageParam),
-  getNextPageParam: (lastPage) => {
+  initialPageParam : null,
+  getNextPageParam: (lastPage:any) => {
     if (!lastPage || lastPage.documents.length === 0) return null;
     return lastPage.documents[lastPage.documents.length - 1].$id;
   },
