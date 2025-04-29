@@ -380,20 +380,87 @@ export async function deletePost(postId?: string, imageId?: string) {
     }
   }
 
-  export async function getUserPosts(userId?: string) {
-    if (!userId) return;
+export async function getUserPosts(userId?: string) {
+if (!userId) return;
+
+try {
+    const post = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.post_collectionId,
+    [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+    );
+
+    if (!post) throw Error;
+
+    return post;
+} catch (error) {
+    console.log(error);
+}
+}
+
+export async function getInfinitePosts(pageParam: string | null = null) {
+    const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(10)];
+  
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam));
+    }
   
     try {
-      const post = await databases.listDocuments(
+      const posts = await databases.listDocuments(
         appwriteConfig.databaseId,
         appwriteConfig.post_collectionId,
-        [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+        queries
       );
   
-      if (!post) throw Error;
-  
-      return post;
+      if (!posts) throw new Error("No posts found");
+      return posts;
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch posts:", error);
+      throw error;
     }
   }
+  
+
+// export async function searchPosts(searchTerm: string) {
+//     try {
+//         const posts = await databases.listDocuments(
+//           appwriteConfig.databaseId,
+//           appwriteConfig.post_collectionId,
+//           [Query.search("caption", searchTerm)]
+//         );
+    
+//         if (!posts) throw Error;
+    
+//         return posts;
+//       } catch (error) {
+//         console.log(error);
+//       }
+// }
+
+
+
+export async function searchPosts(searchTerm: string) {
+    try {
+        // console.log(searchTerm)
+        const searchQueries = Query.or([
+        Query.search("caption", searchTerm),
+        Query.search("location", searchTerm),
+        // Query.equal("tags", searchTerm),
+      ]);
+
+      const posts = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.post_collectionId,
+        [searchQueries]
+      );
+
+      if(!posts){
+        throw Error
+      }
+      return posts;
+    } catch (error) {
+      console.error("Search failed:", error);
+      throw error;
+    }
+  }
+  
