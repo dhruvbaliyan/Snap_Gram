@@ -1,54 +1,51 @@
-# React + TypeScript + Vite
+# 📸 SnapGram
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SnapGram is a modern social media platform that allows users to share moments, connect with friends, and explore creative content — all in real time. Built with a focus on performance, simplicity, and user experience.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🖼️ Upload and share photos
+- ❤️ Like and comment on posts
+- 🔍 Explore trending posts and users
+- 👥 Follow/unfollow users
+- 🔒 Authentication (Sign up, Sign in, Sign out)
+- 📱 Responsive design for mobile & desktop
+- ☁️ Cloud storage integration for image uploads
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠️ Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Frontend
+- React / Next.js
+- Tailwind CSS
+- Redux / Zustand (for state management)
+- Axios / Fetch API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JWT Authentication
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### Others
+- Cloudinary (for image uploads)
+- Vercel / Netlify (for frontend deployment)
+- Render / Railway / Heroku (for backend deployment)
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js (>= 16.x)
+- MongoDB (local or MongoDB Atlas)
+
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
